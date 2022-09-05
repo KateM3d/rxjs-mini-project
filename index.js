@@ -4,7 +4,7 @@ const { map } = require("rxjs/operators");
 const users = {
     data: [{
             status: "active",
-            age: 14,
+            age: 10,
         },
 
         {
@@ -19,7 +19,7 @@ const users = {
 
         {
             status: "active",
-            age: 42,
+            age: 12,
         },
 
         {
@@ -28,12 +28,12 @@ const users = {
         },
         {
             status: "active",
-            age: 51,
+            age: 10,
         },
 
         {
             status: "inactive",
-            age: 39,
+            age: 19,
         },
 
         {
@@ -57,6 +57,11 @@ const observable = new Observable((subscriber) => {
     map((value) => {
         console.log("got data from third operator", value);
         return value.reduce((sum, user) => sum + user.age, 0) / value.length;
+    }),
+    map((value) => {
+        console.log("got data from forth operator", value);
+        if (value < 18) throw new Error("Average age is too young ");
+        else return value;
     })
 );
 
