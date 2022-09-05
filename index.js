@@ -1,10 +1,10 @@
 const { Observable } = require("rxjs");
-const { map } = require("rxjs/operators");
+const { map, pluck, filter } = require("rxjs/operators");
 
 const users = {
     data: [{
             status: "active",
-            age: 10,
+            age: 90,
         },
 
         {
@@ -15,30 +15,6 @@ const users = {
         {
             status: "active",
             age: 31,
-        },
-
-        {
-            status: "active",
-            age: 12,
-        },
-
-        {
-            status: "inactive",
-            age: 23,
-        },
-        {
-            status: "active",
-            age: 10,
-        },
-
-        {
-            status: "inactive",
-            age: 19,
-        },
-
-        {
-            status: "inactive",
-            age: 18,
         },
     ],
 };
@@ -86,13 +62,10 @@ const usersTwo = {
 
 const observable = new Observable((subscriber) => {
     subscriber.next(usersTwo);
-    subscriber.complete();
     subscriber.next(users);
 }).pipe(
-    map((value) => {
-        // console.log("first operator", value);
-        return value.data;
-    }),
+    pluck("data"),
+    filter((value) => value.length >= 5),
     map((value) => {
         // console.log("got data from second operator", value);
         return value.filter((user) => user.status === "active");
